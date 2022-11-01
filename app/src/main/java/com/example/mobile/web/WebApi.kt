@@ -27,7 +27,7 @@ object WebApi {
         .post(json.toRequestBody(JSON))
         .build()
 
-    @SuppressLint("SuspiciousIndentation") //
+    @SuppressLint("SuspiciousIndentation")
     fun checkUser(user : User, result : (result: Boolean) -> Unit){
         val request = createPost("user/" + user.login, gson.toJson(user).toString())
             client.newCall(request).enqueue(object : Callback {
