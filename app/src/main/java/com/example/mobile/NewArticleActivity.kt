@@ -16,8 +16,8 @@ import java.io.InputStream
 
 
 class NewArticleActivity : AppCompatActivity() {
-    lateinit var article : Article
     lateinit var name : EditText
+    lateinit var article : Article
     lateinit var rv : RecyclerView
     lateinit var adapter: ArticleAdapter
     var id : Int = -1
@@ -67,7 +67,6 @@ class NewArticleActivity : AppCompatActivity() {
             rv.adapter = adapter
         }
         findViewById<ImageButton>(R.id.newArticleBack).setOnClickListener { finish() }
-        }
     }
 
     private fun add(){
