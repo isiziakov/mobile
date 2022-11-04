@@ -27,6 +27,16 @@ object WebApi {
         .post(json.toRequestBody(JSON))
         .build()
 
+    private fun createPut(url : String, json : String) = Request.Builder()
+        .url(baseUrl + url)
+        .put(json.toRequestBody(JSON))
+        .build()
+
+    private fun createDelete(url : String, json : String) = Request.Builder()
+        .url(baseUrl + url)
+        .delete(json.toRequestBody(JSON))
+        .build()
+
     @SuppressLint("SuspiciousIndentation")
     fun checkUser(user : User, result : (result: Boolean) -> Unit){
         val request = createPost("user/" + user.login, gson.toJson(user).toString())
@@ -65,6 +75,50 @@ object WebApi {
             override fun onResponse(call: Call, response: Response) {
                 val res = response.body?.string()
                 result(gson.fromJson(res, Article::class.java))
+            }
+        })
+    }
+
+    fun addArcticle(article: Article){
+        val request = createPost("article/", gson.toJson(article).toString())
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+            }
+        })
+    }
+
+    fun updateArcticle(article: Article){
+        val request = createPut("article/", gson.toJson(article).toString())
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+            }
+        })
+    }
+
+    fun deleteArcticle(id: Int){
+        val request = createDelete("article/${id}", "")
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+            }
+        })
+    }
+
+    fun deleteArcticleData(id: Int){
+        val request = createDelete("articledata/${id}", "")
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
             }
         })
     }

@@ -15,14 +15,17 @@ import com.example.mobile.web.WebApi
 class ArticlesActivity : AppCompatActivity() {
     var articles : ArrayList<Article> = ArrayList()
     lateinit var adapter : AllArticlesAdapter
+    lateinit var search : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_articles)
-        articles.add(Article(0, "Test1"))
-        articles.add(Article(0, "Test2"))
-        articles.add(Article(0, "Test3"))
         initialize()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getArticles(search.text.toString())
     }
 
     private fun initialize(){
@@ -31,7 +34,7 @@ class ArticlesActivity : AppCompatActivity() {
         adapter = createAdapter()
         rv.adapter = adapter
         findViewById<ImageButton>(R.id.articlesBack).setOnClickListener { finish() }
-        val search = findViewById<EditText>(R.id.articlesSearch)
+        search = findViewById<EditText>(R.id.articlesSearch)
         search.addTextChangedListener {
             getArticles(search.text.toString())
         }
@@ -46,7 +49,9 @@ class ArticlesActivity : AppCompatActivity() {
     }
 
     private fun deleteArticle(position : Int){
-        TODO()
+        WebApi.deleteArcticle(articles[position].id)
+        articles.removeAt(position)
+        adapter.notifyItemRemoved(position)
     }
 
     private fun createAdapter() = AllArticlesAdapter(articles, true, { update ->  updateArticle(update)},
