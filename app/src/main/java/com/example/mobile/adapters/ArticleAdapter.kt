@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.DTO.Article
 import com.example.mobile.DTO.ArticleData
 import com.example.mobile.R
+import com.example.mobile.helpful.ItemTouchHelperAdapter
+import java.lang.Integer.min
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PanelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -34,7 +37,7 @@ class ArticleAdapter(private val data: ArrayList<ArticleData>,
                      private val delete : (delete: Int) -> Unit,
                      private val addImage : () -> Unit,
                      private val addText : () -> Unit)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperAdapter {
 
     override fun getItemCount() = data.size + 1
 
@@ -82,4 +85,20 @@ class ArticleAdapter(private val data: ArrayList<ArticleData>,
     override fun getItemId(position : Int) = position.toLong()
 
     override fun getItemViewType(position : Int) = if (position == data.size) -1 else position
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until min(toPosition, data.size - 1)) {
+                Collections.swap(data, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(data, i, i - 1)
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun onItemDismiss(position: Int) {
+    }
 }

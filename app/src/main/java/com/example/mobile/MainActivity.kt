@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.mobile.DTO.User
+import com.example.mobile.db.DB
 import com.example.mobile.helpful.PreferencesHelper
 import com.example.mobile.web.WebApi
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         PreferencesHelper.setup(this)
+        DB.setup(this)
 
         checkEnter()
 
